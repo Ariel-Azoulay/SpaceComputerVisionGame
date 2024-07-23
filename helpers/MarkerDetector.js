@@ -12,10 +12,10 @@ class MarkerDetectorLogic {
 
   #averagePoints(points) {
     const center = { x: 0, y: 0 };
-    for (const point of points) {
+    points.forEach((point) => {
       center.x += point.x;
       center.y += point.y;
-    }
+    });
     center.x /= points.length;
     center.y /= points.length;
     return center;
@@ -50,6 +50,11 @@ class MarkerDetectorLogic {
         const x = pIndex % imageData.width;
         points.push({ x, y, blueness });
       }
+    }
+
+    if (points.length < 2) {
+      // Not enough points to detect markers
+      return { leftMarker: null, rightMarker: null, tilt: 0, distance: 0 };
     }
 
     let centroid1 = points[0];
